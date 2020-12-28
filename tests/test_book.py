@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-
-from book import Book
+from libgen.book import Book
 
 url = "http://libgen.rs/search.php?req=python&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def"
 

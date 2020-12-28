@@ -1,4 +1,4 @@
-from book import Book
+from libgen.book import Book
 
 
 def get_titles_from_page(soup):

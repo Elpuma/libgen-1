@@ -3,12 +3,12 @@ import pickle
 import requests
 from bs4 import BeautifulSoup
 
-from page import _get_book_from_page, get_book_with_index
+from libgen.page import _get_book_from_page, get_book_with_index
 
 url = "http://libgen.rs/search.php?req=python&open=0&res=50&view=simple&phrase=1&column=def"
 
 
-class libgen:
+class Libgen:
     URL = "http://libgen.rs/search.php?req={0}&open=0&res={1}&view=simple&phrase=1&column=def"
 
     # used for storing indexies
@@ -16,8 +16,8 @@ class libgen:
 
     def __init__(self, search, result_per_page=10):
         self.search = str(search)
-        self.result_per_page = int(result_per_page)
-        result = requests.get(libgen.URL.format(self.search, self.result_per_page))
+        self.result_per_page = str(result_per_page)
+        result = requests.get(Libgen.URL.format(self.search, self.result_per_page))
         self.__soup = BeautifulSoup(result.text, "html.parser")
 
     def list_search_result(self):
@@ -36,16 +36,10 @@ class libgen:
             raise KeyError("Key not found in tmp file")
 
     def __save_keys_and_names(self, _dict):
-        with open(libgen._tmp, "wb") as t:
+        with open(Libgen._tmp, "wb") as t:
             pickle.dump(_dict, t, protocol=pickle.HIGHEST_PROTOCOL)
 
     def check_in_keys_names(self, _index):
-        with open(libgen._tmp, "rb") as t:
+        with open(Libgen._tmp, "rb") as t:
             b = pickle.load(t)
         return True if _index in b.keys() else False
-
-
-if __name__ == "__main__":
-    p = libgen("python", 10)
-    p.list_search_result()
-    print(p.info(2))

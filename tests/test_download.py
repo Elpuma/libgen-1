@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-
-from book import Book
-from download import _get_content_href_from_mirror, download
+from libgen.book import Book
+from libgen.download import _get_content_href_from_mirror, download
 
 url = "http://libgen.rs/search.php?req=python&lg_topic=libgen&open=0&view=simple&res=25&phrase=1&column=def"
 
