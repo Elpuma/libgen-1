@@ -5,8 +5,6 @@ from bs4 import BeautifulSoup
 
 from libgen.page import _get_book_from_page, get_book_with_index
 
-url = "http://libgen.rs/search.php?req=python&open=0&res=50&view=simple&phrase=1&column=def"
-
 
 class Libgen:
     URL = "http://libgen.rs/search.php?req={0}&open=0&res={1}&view=simple&phrase=1&column=def"
