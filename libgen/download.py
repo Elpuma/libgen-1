@@ -57,26 +57,6 @@ def _get_content_href_from_mirror(mirror, mirror_list):
         pass
 
 
-def save_to_file(response, filename):
-    chunk_size = 1024
-    try:
-        total_size = int(response.headers["content-length"])
-    except KeyError:
-        total_size = response.content
-
-    total_chunks = total_size / chunk_size
-    file_iterable = response.iter_content(chunk_size=chunk_size)
-
-    # implementing tqdm
-    tqdm_iter = tqdm(
-        iterable=file_iterable,
-        total=total_chunks,
-        unit="KB",
-        desc=filename,
-        leave=False,
-    )
-
-    # write to file
+def save_to_file(response, filename, disable_progress_bar=True):
     with open(filename, "wb") as f:
-        for data in tqdm_iter:
-            f.write(data)
+        f.write(response.content)

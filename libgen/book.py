@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-class Book:
+class Book(object):
     """
     Book object
     """
@@ -43,14 +43,11 @@ class Book:
     def get_language(self):
         return self.child_tds[6].text
 
-    def get_deafault_href(self):
-        return self.child_tds[2]["href"]
-
     def get_size(self):
-        return self.child_tds[7]["href"]
+        return self.child_tds[7].text
 
     def get_file_extension(self):
-        return self.child_tds[8]["href"]
+        return self.child_tds[8].text
 
     def _get_href_from_mirror(self, td):
         return td.a["href"]
@@ -61,3 +58,24 @@ class Book:
         for i, mirror in enumerate(self.child_tds[9:-1]):
             mirrors[mirror.a["title"]] = mirror.a["href"]
         return mirrors
+
+    def __str__(self):
+        return """
+        Title: {}
+        Authors : {}
+        Year: {}
+        Lang: {}
+        Ext: {}
+        Pages: {}
+        Size: {}
+        mirrors: {}
+        """.format(
+            self.get_title(),
+            self.get_authors(),
+            self.get_year(),
+            self.get_language(),
+            self.get_file_extension(),
+            self.get_pages(),
+            self.get_size(),
+            list(self.get_mirrors().keys()),
+        )
