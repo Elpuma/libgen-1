@@ -3,7 +3,7 @@ import pickle
 import requests
 from bs4 import BeautifulSoup
 
-from libgen.page import _get_book_from_page
+from page import _get_book_from_page, get_book_with_index
 
 url = "http://libgen.rs/search.php?req=python&open=0&res=50&view=simple&phrase=1&column=def"
 
@@ -23,26 +23,29 @@ class libgen:
     def list_search_result(self):
         _keys_names = {}
         for key, book in enumerate(_get_book_from_page(self.__soup)):
-            name = book.get_title()
-            _keys_names[key + 1] = name
-            print("{} {}".format(key + 1, name))
+            _keys_names[key + 1] = book.get_title()
+            print("{} {}".format(key + 1, book.get_title()))
 
-        # save wit pickle
+        # save with pickle
         self.__save_keys_and_names(_keys_names)
 
-    def book_info(self, key):
-        self.check_in_keys_names(key)
+    def info(self, key):
+        if self.check_in_keys_names(key):
+            return get_book_with_index(self.__soup, key - 1)
+        else:
+            raise KeyError("Key not found in tmp file")
 
     def __save_keys_and_names(self, _dict):
         with open(libgen._tmp, "wb") as t:
-            pickle.dump(_dict, t)
+            pickle.dump(_dict, t, protocol=pickle.HIGHEST_PROTOCOL)
 
     def check_in_keys_names(self, _index):
         with open(libgen._tmp, "rb") as t:
             b = pickle.load(t)
-        print(b.get(_index)[0])
+        return True if _index in b.keys() else False
 
 
 if __name__ == "__main__":
     p = libgen("python", 10)
     p.list_search_result()
+    print(p.info(2))

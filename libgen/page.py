@@ -1,4 +1,4 @@
-from libgen.book import Book
+from book import Book
 
 
 def get_titles_from_page(soup):
@@ -15,3 +15,7 @@ def get_trs_from_page(soup):
         return tr
     else:
         raise NotImplementedError
+
+
+def get_book_with_index(soup, index):
+    return _get_book_from_page(soup)[index]
